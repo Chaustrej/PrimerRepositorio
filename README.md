@@ -1,2 +1,1 @@
-# PrimerRepositorio
-Universidad
+Este es mi primer proyecto de la universidad programacion 2
