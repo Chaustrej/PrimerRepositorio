@@ -17,22 +17,22 @@ string LasPalabras, Laslineas, continuar;
 
     string palabra, linea, continuar;
     
-    cout << "*** BUSCADOR ***\n";
+    cout << "Aqui se encuentra el buscador de palabras\n";
     cin.ignore();
     
     do {
         ifstream archivo("Archivo.txt");
         if (!archivo) {
-            cout << "Error: archivo 'Archivo.txt' no encontrado\n";
+            cout << "Error: archivo 'Archivo.txt' no encontrado verifique bien si se encuentra cerca\n";
             return 1;
         }
         
         do {
-            cout << "\nPalabra a buscar: ";
+            cout << "\nPorfavor coloque las palabras que se va a buscar: ";
             getline(cin, palabra);
         } while (palabra.empty());
         
-        cout << "\n--- Resultados ---\n";
+        cout << "\nEl resultado seria:\n";
         
         int total = 0, Laslineas_num = 1;
         bool encontrado = false;
@@ -53,16 +53,16 @@ string LasPalabras, Laslineas, continuar;
         
 
 
-
-
 }
 
+}
+//// Convierte una cadena a minúsculas
 string Minuscula(string palabra) {
     // Convierte una cadena a minúsculas
     transform(palabra.begin(), palabra.end(), palabra.begin(), ::tolower);
     return palabra;
 }
-
+// Marca las palabras encontradas en la línea y devuelve la línea modificada
 string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo) {
         string resultado = "";
     string lineaMinima = Minuscula(Laslineas);
