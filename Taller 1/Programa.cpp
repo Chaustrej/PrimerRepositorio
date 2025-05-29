@@ -4,18 +4,17 @@
 #include <fstream>
 #include <algorithm>
 
-void ();
 using namespace std;
 // prototipo de funciones
 string Minuscula();
 string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo);
 // Definire las funciones que usare en el programa
  // Variables globales
+ 
 int contador = 0; // Contador de palabras encontradas
 int main() { 
 string LasPalabras, Laslineas, continuar;
 
-    string palabra, linea, continuar;
     
     cout << "Aqui se encuentra el buscador de palabras\n";
     cin.ignore();
@@ -29,8 +28,8 @@ string LasPalabras, Laslineas, continuar;
         
         do {
             cout << "\nPorfavor coloque las palabras que se va a buscar: ";
-            getline(cin, palabra);
-        } while (palabra.empty());
+            getline(cin, LasPalabras);
+        } while (LasPalabras.empty());
         
         cout << "\nEl resultado seria:\n";
         
@@ -50,12 +49,25 @@ string LasPalabras, Laslineas, continuar;
         }
         
         archivo.close();
+   if (encontrado) {
+            cout << "\nEste seria el numero de encontrados: " << total << endl;
+        } else {
+            cout << "No se ha encontrado la palabra.\n";
+        }
         
-
+        do {
+            cout << "\nDesea Buscar otra palabra? (s/n): ";
+            getline(cin, continuar);
+            continuar = Minuscula();
+        } while (continuar != "s" && continuar != "n");
+        
+    } while (Minuscula() == "s");
+    
+    cout << "Esto es todo por ahora\n";
+    return 0;
 
 }
 
-}
 //// Convierte una cadena a minúsculas
 string Minuscula(string palabra) {
     // Convierte una cadena a minúsculas
@@ -63,7 +75,7 @@ string Minuscula(string palabra) {
     return palabra;
 }
 // Marca las palabras encontradas en la línea y devuelve la línea modificada
-string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo) {
+string Marcarr(const string& LasPalabras, const string& Laslineas, int &Eltiempo) {
         string resultado = "";
     string lineaMinima = Minuscula(Laslineas);
     string palabraMinima = Minuscula(LasPalabras);
@@ -72,7 +84,7 @@ string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo
     while ((Encontro = lineaMinima.find(palabraMinima, pos)) != string::npos) {
         resultado += Laslineas.substr(pos, Encontro - pos);
         resultado += "\033[31m" + Laslineas.substr(Encontro, LasPalabras.length()) + "\033[0m";
-        contador++;
+        Eltiempo++;
         pos = Encontro + LasPalabras.length();
     }
     resultado += Laslineas.substr(pos);
