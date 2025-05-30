@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <limits>
+#include <limits> //
 #include <locale.h>
 
 using namespace std;
@@ -10,8 +10,8 @@ using namespace std;
 // Prototipos
 string Minuscula(const string& palabra);
 string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo);
-
-int main() {
+ 
+int main() { 
     string LasPalabras, Laslineas, continuar;
     setlocale(LC_ALL, "es_ES.UTF-8"); 
     cout << "--Aquí se encuentra el buscador de palabras-- \n";
@@ -79,7 +79,7 @@ int main() {
     cout << "\n Esto es todo por ahora gracias por usarme\n";
     return 0;
 }
-
+// funciones 
 string Minuscula(const string& palabra) {
     string resultado = palabra;
     transform(resultado.begin(), resultado.end(), resultado.begin(), ::tolower);
