@@ -2,27 +2,36 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <limits>
+#include <locale>
 
 using namespace std;
 
-// Prototipos de funciones
+// Prototipos
 string Minuscula(const string& palabra);
 string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo);
 
-// Variables globales
-int contador = 0; // Contador de palabras encontradas
-
 int main() {
+    setlocale(LC_ALL, "");
+
     string LasPalabras, Laslineas, continuar;
 
-    cout << "Aqui se encuentra el buscador de palabras\n";
-    cin.ignore();
+    cout << "--Aqui se encuentra el buscador de palabras-- \n";
 
     do {
-        ifstream archivo("Archivo.txt");
-        if (!archivo) {
-            cout << "Error: archivo 'Archivo.txt' no encontrado. Verifique bien si se encuentra cerca.\n";
-            return 1;
+        // Mostrar contenido del archivo SIN numerar
+        {
+            ifstream mostrar("archivo.txt");
+            if (mostrar.is_open()) {
+                cout << "\nContenido del archivo:\n";
+                while (getline(mostrar, Laslineas)) {
+                    cout << Laslineas << endl;  // Aquí quito el número de línea
+                }
+                mostrar.close();
+            } else {
+                cout << "No se pudo abrir el archivo 'archivo.txt'. Verifique si existo...\n";
+                return 1;
+            }
         }
 
         do {
@@ -30,7 +39,13 @@ int main() {
             getline(cin, LasPalabras);
         } while (LasPalabras.empty());
 
-        cout << "\nEl resultado sería:\n";
+        ifstream archivo("archivo.txt");
+        if (!archivo.is_open()) {
+            cout << "No se pudo abrir el archivo para buscar.\n";
+            return 1;
+        }
+
+        cout << "\n El resultado seria: \n";
 
         int total = 0, Laslineas_num = 1;
         bool encontrado = false;
@@ -48,44 +63,42 @@ int main() {
         }
 
         archivo.close();
+
         if (encontrado) {
-            cout << "\nEste sería el número de encontrados: " << total << endl;
+            cout << "\nEste seria el numero de encontrados, los colocamos en orden : " << total << endl;
         } else {
-            cout << "No se ha encontrado la palabra.\n";
+            cout << "No se ha encontrado la palabra que usted coloco intente de nuevo.\n";
         }
 
         do {
-            cout << "\n¿Desea buscar otra palabra? (s/n): ";
+            cout << " Desea buscar otra palabra? (s/n): ";
             getline(cin, continuar);
             continuar = Minuscula(continuar);
         } while (continuar != "s" && continuar != "n");
 
     } while (continuar == "s");
 
-    cout << "Esto es todo por ahora\n";
+    cout << "\n Esto es todo por ahora gracias por usarme\n";
     return 0;
 }
 
-// Convierte una cadena a minúsculas
 string Minuscula(const string& palabra) {
     string resultado = palabra;
     transform(resultado.begin(), resultado.end(), resultado.begin(), ::tolower);
     return resultado;
 }
 
-// Marca las palabras encontradas en la línea y devuelve la línea modificada
 string Marcarr(const string& LasPalabras, const string& Laslineas, int &Eltiempo) {
     string resultado = "";
     string lineaMinima = Minuscula(Laslineas);
     string palabraMinima = Minuscula(LasPalabras);
     size_t pos = 0, Encontro;
-    Eltiempo = 0; // Inicializa el contador local
+    Eltiempo = 0;
 
     while ((Encontro = lineaMinima.find(palabraMinima, pos)) != string::npos) {
-    
         resultado += Laslineas.substr(pos, Encontro - pos);
-        resultado += "033[32m" + Laslineas.substr(Encontro, LasPalabras.length()) + "033[0m"; // Resalta la palabra encontrada en verde
-        Eltiempo++; // Incrementa el contador local
+        resultado += "\033[32m" + Laslineas.substr(Encontro, LasPalabras.length()) + "\033[0m";
+        Eltiempo++;
         pos = Encontro + LasPalabras.length();
     }
     resultado += Laslineas.substr(pos);
