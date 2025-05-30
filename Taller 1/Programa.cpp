@@ -3,7 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include <limits>
-#include <locale>
+#include <locale.h>
 
 using namespace std;
 
@@ -12,11 +12,9 @@ string Minuscula(const string& palabra);
 string Marcarr(const string& LasPalabras, const string& Laslineas, int& Eltiempo);
 
 int main() {
-    setlocale(LC_ALL, "");
-
     string LasPalabras, Laslineas, continuar;
-
-    cout << "--Aqui se encuentra el buscador de palabras-- \n";
+    setlocale(LC_ALL, "es_ES.UTF-8"); 
+    cout << "--Aquí se encuentra el buscador de palabras-- \n";
 
     do {
         // Mostrar contenido del archivo SIN numerar
@@ -45,7 +43,7 @@ int main() {
             return 1;
         }
 
-        cout << "\n El resultado seria: \n";
+        cout << "\n El resultado sería: \n";
 
         int total = 0, Laslineas_num = 1;
         bool encontrado = false;
