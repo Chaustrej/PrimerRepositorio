@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const char* ARCHIVO = "inventario.dat";
+const char* ARCHIVO = "Productos.dat";
 struct Producto {
     int codigo;
     char nombre[30];
