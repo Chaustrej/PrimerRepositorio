@@ -72,6 +72,33 @@ if(!encontrado){
 }
 }
 void ModificarProducto(){
+int codigo;
+cout << "Codigo: "; cin >> codigo;
+
+fstream archivo(ARCHIVO, ios::binary | ios::binary | ios:: out);
+Producto p;
+bool encontrado = false;
+
+while(archivo.read((char*)&p, sizeof(producto))){
+    if (p.activo && p.codigo == codigo) {
+        cout << "Nuevo nombre ("<< p.nombre << " ):";
+        cin.ignore();
+        cin.getline(p.nombre, 30);
+
+        cout << "Nuevo precio (" << p.precio << "):";
+        cin >> p.precio;
+         
+        archivo.seekp(-sizeof(Producto), ios::cur);
+        archivo.write((char*)&p, sizeof(Producto));
+
+        cout << "Producto Modificado\n";
+        encontrado = true;
+        break;
+    }
+}
+if (!encontrado) {
+    cout << "Producto no encontrado.\n";
+}
 
 }
 void EliminarProducto(){
