@@ -13,14 +13,6 @@ struct Producto {
     char categoria[20];
     bool activo;
 };
-bool existeCodigo(int codigo) {
-    ifstream archivo(ARCHIVO, ios::binary);
-    Producto p;
-    while (archivo.read((char*)&p, sizeof(Producto))) {
-        if (p.activo && p.codigo == codigo) return true;
-    }
-    return false;
-}
 void MostrarMenu(){
     cout << "\n --Menu de Productos--\n" << endl;
     cout << "1. Agregar producto" << endl;
@@ -28,7 +20,7 @@ void MostrarMenu(){
     cout << "3. Eliminar producto" << endl;
     cout << "4. Listar productos" << endl;
     cout << "5. Buscar producto" << endl;
-    cout << "6. Buscar por Categoria" << endl;
+    cout << "6. Buscar por categoria" << endl;
     cout << "7. Salir" << endl;
     cout << "Seleccione una opcion: ";
 }
@@ -36,10 +28,6 @@ void agregarProducto(){
     Producto p;
     cout << "\n-Agregar Producto-\n";
     cout << "Ingrese codigo: "; cin >> p.codigo;
-if (existeCodigo(p.codigo)) {
-    cout << "Error: El código ya existe.\n";
-    return;
-}
     cout << "Ingrese nombre: "; cin.ignore(); cin.getline(p.nombre, 30);
     cout << "Ingrese precio: "; cin >> p.precio;
     cout << "Ingrese stock: "; cin >> p.stock;
@@ -88,7 +76,7 @@ void ModificarProducto(){
 int codigo;
 cout << "Codigo: "; cin >> codigo;
 
-fstream archivo(ARCHIVO, ios::binary | ios::in | ios::out);
+fstream archivo(ARCHIVO, ios::binary | ios::binary | ios:: out);
 Producto p;
 bool encontrado = false;
 
@@ -139,10 +127,9 @@ void EliminarProducto(){
         cout <<"Producto no encontrado";
     }
 }
-
 void mostrarPorCategoria() {
     char categoria[20];
-    cout << "Ingrese categoria: ";
+    cout << "Ingrese categoría: ";
     cin.ignore();
     cin.getline(categoria, 20);
 
@@ -152,18 +139,15 @@ void mostrarPorCategoria() {
 
     while (archivo.read((char*)&p, sizeof(Producto))) {
         if (p.activo && strcmp(p.categoria, categoria) == 0) {
-            cout << "Código: " << p.codigo << " | Nombre: " << p.nombre << endl;
+            cout << "Codigo: " << p.codigo << " Nombre: " << p.nombre << endl;
             encontrados = true;
         }
     }
 
-    if (!encontrados) cout << "No hay productos en esta categoría.\n";
+    if (!encontrados) cout << "No hay productos en esta categoria.\n";
 }
+
 int main () {
-    ifstream archivo(ARCHIVO, ios::binary);
-    if (archivo) { cout << "Datos cargados correctamente.\n";
-} else cout << "No hay datos previos. Se creará un nuevo archivo.\n";
-archivo.close();
     int opcion;
     do { 
         MostrarMenu();
@@ -184,14 +168,14 @@ archivo.close();
             case 5:
                 BuscarProducto();
                 break;
-            case 6:
-            mostrarPorCategoria();
+            case 6: mostrarPorCategoria();
+            break;
             case 7:
                 cout << "Saliendo del programa.\n";
                 break;
             default:
                 cout << "Opcion invalida. Intente de nuevo.\n";
         }
-    } while (opcion != 7);
+    } while (opcion != 6);
     
 }
