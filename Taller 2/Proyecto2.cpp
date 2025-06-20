@@ -20,7 +20,8 @@ void MostrarMenu(){
     cout << "3. Eliminar producto" << endl;
     cout << "4. Listar productos" << endl;
     cout << "5. Buscar producto" << endl;
-    cout << "6. Salir" << endl;
+    cout << "6. Buscar por Categoria" << endl;
+    cout << "7. Salir" << endl;
     cout << "Seleccione una opcion: ";
 }
 void agregarProducto(){
@@ -127,6 +128,25 @@ void EliminarProducto(){
     }
 }
 
+void mostrarPorCategoria() {
+    char categoria[20];
+    cout << "Ingrese categoría: ";
+    cin.ignore();
+    cin.getline(categoria, 20);
+
+    ifstream archivo(ARCHIVO, ios::binary);
+    Producto p;
+    bool encontrados = false;
+
+    while (archivo.read((char*)&p, sizeof(Producto))) {
+        if (p.activo && strcmp(p.categoria, categoria) == 0) {
+            cout << "Código: " << p.codigo << " | Nombre: " << p.nombre << endl;
+            encontrados = true;
+        }
+    }
+
+    if (!encontrados) cout << "No hay productos en esta categoría.\n";
+}
 int main () {
     int opcion;
     do { 
@@ -149,11 +169,13 @@ int main () {
                 BuscarProducto();
                 break;
             case 6:
+            mostrarPorCategoria();
+            case 7:
                 cout << "Saliendo del programa.\n";
                 break;
             default:
                 cout << "Opcion invalida. Intente de nuevo.\n";
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
     
 }
