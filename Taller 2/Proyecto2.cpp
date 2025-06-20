@@ -28,6 +28,10 @@ void agregarProducto(){
     Producto p;
     cout << "\n-Agregar Producto-\n";
     cout << "Ingrese codigo: "; cin >> p.codigo;
+if (existeCodigo(p.codigo)) {
+    cout << "Error: El código ya existe.\n";
+    return;
+}
     cout << "Ingrese nombre: "; cin.ignore(); cin.getline(p.nombre, 30);
     cout << "Ingrese precio: "; cin >> p.precio;
     cout << "Ingrese stock: "; cin >> p.stock;
@@ -130,7 +134,7 @@ void EliminarProducto(){
 
 void mostrarPorCategoria() {
     char categoria[20];
-    cout << "Ingrese categoría: ";
+    cout << "Ingrese categoria: ";
     cin.ignore();
     cin.getline(categoria, 20);
 
