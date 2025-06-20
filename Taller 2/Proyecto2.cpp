@@ -76,7 +76,7 @@ void ModificarProducto(){
 int codigo;
 cout << "Codigo: "; cin >> codigo;
 
-fstream archivo(ARCHIVO, ios::binary | ios::binary | ios:: out);
+fstream archivo(ARCHIVO, ios::binary | ios::in | ios::out);
 Producto p;
 bool encontrado = false;
 
