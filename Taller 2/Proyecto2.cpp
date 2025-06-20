@@ -176,6 +176,6 @@ int main () {
             default:
                 cout << "Opcion invalida. Intente de nuevo.\n";
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
     
 }
