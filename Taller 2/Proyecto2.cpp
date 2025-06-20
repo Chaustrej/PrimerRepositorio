@@ -75,6 +75,29 @@ void ModificarProducto(){
 
 }
 void EliminarProducto(){
+    int codigo;
+    cout << "\n -Eliminando Producto- ";
+    cout << "Codigo: "; cin >> codigo;
+    
+    fstream archivo(ARCHIVO, ios::binary | ios::in | ios::out);
+    Producto p;
+    bool encontrado = false;
+
+    while(archivo.read((char*)&p, sizeof(Producto))){
+        if(p.activo && p.codigo == codigo) {
+            p.activo = false;
+            
+            archivo.seekp(-sizeof(Producto), ios::cur);
+            archivo.write((char*)&p, sizeof(Producto));
+
+            cout << "Producto Eliminado";
+            encontrado = true;
+            break;
+        }
+    }
+    if (!encontrado) {
+        cout <<"Producto no encontrado\n"
+    }
 }
 
 int main () {
