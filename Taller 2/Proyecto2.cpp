@@ -24,6 +24,20 @@ void MostrarMenu(){
     cout << "6. Salir" << endl;
     cout << "Seleccione una opcion: ";
 }
+void agregarProducto(){
+    Producto p;
+    cout << "\n-Agregar Producto-\n";
+    cout << "Ingrese codigo: "; cin >> p.codigo;
+    cout << "Ingrese nombre: "; cin.ignore(); cin.getline(p.nombre, 30);
+    cout << "Ingrese precio: "; cin >> p.precio;
+    cout << "Ingrese stock: "; cin >> p.stock;
+    cout << "Ingrese categoria: "; cin.ignore(); cin.getline(p.categoria, 20);
+    p.activo = true;
+
+    ofstream archivo(ARCHIVO, ios::binary | ios::app);
+    archivo.write(reinterpret_cast<char*>(&p), sizeof(Producto));
+    cout << "Producto agregado exitosamente.\n";
+}
 int main () { 
 
     
