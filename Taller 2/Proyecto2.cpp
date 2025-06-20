@@ -48,21 +48,56 @@ void mostrarProductos(){
     cout << "\n-Lista de Productos-\n";
     while (archivo.read(char*>(&p), sizeof(Producto))) {
         if (p.activo) {
-            cout << "Codigo: " << p.codigo << ", Nombre: " << p.nombre 
-                 << ", Precio: " << p.precio << ", Stock: " << p.stock 
-                 << ", Categoria: " << p.categoria << endl;
+            cout << "Codigo: " << p.codigo << ", Nombre: " << p.nombre << ", Precio: " << p.precio << ", Stock: " << p.stock << ", Categoria: " << p.categoria << endl;
         }
     }
 }
 
 void BuscarProducto(){
-}
+int codigo; 
+cout << "Ingrese el codigo del producto a buscar: "; cin >> codigo;
+ifstream archivo(ARCHIVO, ios::binary);
+producto p;
+bool encontrado = false;
+while (archivo.read ((char*)&p, sizeof(producto))) {
+    if (p.activo && p.codigo ==codigo){
+        cout << "Nombre: "<<p.nombre << endl;
+        encontrado=true;
+        break;
+   }}}
 void ModificarProducto(){
 }
 void EliminarProducto(){
 }
 
-int main () { 
+int main () {
+    int opcion;
+    do { 
+        MostrarMenu();
+        cin >> opcion;
+        switch (opcion) {
+            case 1:
+                agregarProducto();
+                break;
+            case 2:
+                ModificarProducto();
+                break;
+            case 3:
+                EliminarProducto();
+                break;
+            case 4:
+                mostrarProductos();
+                break;
+            case 5:
+                BuscarProducto();
+                break;
+            case 0:
+                cout << "Saliendo del programa.\n";
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo.\n";
+        }
+    } while (opcion != 0);
 int opcion;
     
 }
