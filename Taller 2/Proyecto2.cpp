@@ -4,8 +4,7 @@
 
 using namespace std;
 
-const char* FILE_NAME = "productos.dat";
-
+const char* ARCHIVO = "inventario.dat";
 struct Producto {
     int codigo;
     char nombre[30];
@@ -46,7 +45,7 @@ void mostrarProductos(){
     }
     Producto p;
     cout << "\n-Lista de Productos-\n";
-    while (archivo.read(char*>(&p), sizeof(Producto))) {
+    while (archivo.read((char*)&p, sizeof(Producto))) {
         if (p.activo) {
             cout << "Codigo: " << p.codigo << ", Nombre: " << p.nombre << ", Precio: " << p.precio << ", Stock: " << p.stock << ", Categoria: " << p.categoria << endl;
         }
@@ -55,19 +54,21 @@ void mostrarProductos(){
 
 void BuscarProducto(){
 int codigo; 
-cout <<"-Buscar Producto-"
-cout << "Ingrese el codigo del producto a buscar: "; cin >> codigo;
+cout <<"-Buscando Productos-\n";
+cout << "\nIngrese el codigo del producto que desea buscar: "; cin >> codigo;
 ifstream archivo(ARCHIVO, ios::binary);
-producto p;
+Producto p;
 bool encontrado = false;
-while (archivo.read ((char*)&p, sizeof(producto))) {
+while (archivo.read ((char*)&p, sizeof(Producto))) {
     if (p.activo && p.codigo ==codigo){
         cout << "Nombre: "<<p.nombre << endl;
+        cout << "Precio: $"<<p.precio <<endl;
+        cout << "Stock: "<<p.stock <<endl; 
         encontrado=true;
         break;
    }}
 if(!encontrado){
-    cout << "Producto no encontrado.\n"
+    cout << "Producto no encontrado.\n";
 }
 }
 void ModificarProducto(){
@@ -104,6 +105,5 @@ int main () {
                 cout << "Opcion invalida. Intente de nuevo.\n";
         }
     } while (opcion != 0);
-int opcion;
     
 }
