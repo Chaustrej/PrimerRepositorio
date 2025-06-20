@@ -13,6 +13,14 @@ struct Producto {
     char categoria[20];
     bool activo;
 };
+bool existeCodigo(int codigo) {
+    ifstream archivo(ARCHIVO, ios::binary);
+    Producto p;
+    while (archivo.read((char*)&p, sizeof(Producto))) {
+        if (p.activo && p.codigo == codigo) return true;
+    }
+    return false;
+}
 void MostrarMenu(){
     cout << "\n --Menu de Productos--\n" << endl;
     cout << "1. Agregar producto" << endl;
@@ -80,7 +88,7 @@ void ModificarProducto(){
 int codigo;
 cout << "Codigo: "; cin >> codigo;
 
-fstream archivo(ARCHIVO, ios::binary | ios::binary | ios:: out);
+fstream archivo(ARCHIVO, ios::binary | ios::in | ios::out);
 Producto p;
 bool encontrado = false;
 
@@ -152,6 +160,10 @@ void mostrarPorCategoria() {
     if (!encontrados) cout << "No hay productos en esta categoría.\n";
 }
 int main () {
+    ifstream archivo(ARCHIVO, ios::binary);
+    if (archivo) { cout << "Datos cargados correctamente.\n";
+} else cout << "No hay datos previos. Se creará un nuevo archivo.\n";
+archivo.close();
     int opcion;
     do { 
         MostrarMenu();
