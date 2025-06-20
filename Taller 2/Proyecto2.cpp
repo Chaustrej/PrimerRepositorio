@@ -55,6 +55,7 @@ void mostrarProductos(){
 
 void BuscarProducto(){
 int codigo; 
+cout <<"-Buscar Producto-"
 cout << "Ingrese el codigo del producto a buscar: "; cin >> codigo;
 ifstream archivo(ARCHIVO, ios::binary);
 producto p;
@@ -64,8 +65,13 @@ while (archivo.read ((char*)&p, sizeof(producto))) {
         cout << "Nombre: "<<p.nombre << endl;
         encontrado=true;
         break;
-   }}}
+   }}
+if(!encontrado){
+    cout << "Producto no encontrado.\n"
+}
+}
 void ModificarProducto(){
+
 }
 void EliminarProducto(){
 }
