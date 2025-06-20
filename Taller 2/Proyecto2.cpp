@@ -38,7 +38,31 @@ void agregarProducto(){
     archivo.write(reinterpret_cast<char*>(&p), sizeof(Producto));
     cout << "Producto agregado exitosamente.\n";
 }
-int main () { 
+void mostrarProductos(){
+    ifstream archivo(ARCHIVO, ios::binary);
+    if (!archivo) {
+        cout << "No hay productos registrados\n";
+        return;
+    }
+    Producto p;
+    cout << "\n-Lista de Productos-\n";
+    while (archivo.read(char*>(&p), sizeof(Producto))) {
+        if (p.activo) {
+            cout << "Codigo: " << p.codigo << ", Nombre: " << p.nombre 
+                 << ", Precio: " << p.precio << ", Stock: " << p.stock 
+                 << ", Categoria: " << p.categoria << endl;
+        }
+    }
+}
 
+void BuscarProducto(){
+}
+void ModificarProducto(){
+}
+void EliminarProducto(){
+}
+
+int main () { 
+int opcion;
     
 }
