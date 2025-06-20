@@ -14,7 +14,7 @@ struct Producto {
     bool activo;
 };
 void MostrarMenu(){
-    cout << "Menu de Productos" << endl;
+    cout << "\n --Menu de Productos--\n" << endl;
     cout << "1. Agregar producto" << endl;
     cout << "2. Modificar producto" << endl;
     cout << "3. Eliminar producto" << endl;
@@ -68,7 +68,7 @@ while (archivo.read ((char*)&p, sizeof(Producto))) {
         break;
    }}
 if(!encontrado){
-    cout << "Producto no encontrado.\n";
+    cout << "\nProducto no encontrado.\n";
 }
 }
 void ModificarProducto(){
@@ -79,7 +79,7 @@ fstream archivo(ARCHIVO, ios::binary | ios::binary | ios:: out);
 Producto p;
 bool encontrado = false;
 
-while(archivo.read((char*)&p, sizeof(producto))){
+while(archivo.read((char*)&p, sizeof(Producto))){
     if (p.activo && p.codigo == codigo) {
         cout << "Nuevo nombre ("<< p.nombre << " ):";
         cin.ignore();
@@ -103,7 +103,7 @@ if (!encontrado) {
 }
 void EliminarProducto(){
     int codigo;
-    cout << "\n -Eliminando Producto- ";
+    cout << "\n -Eliminando Producto- \n";
     cout << "Codigo: "; cin >> codigo;
     
     fstream archivo(ARCHIVO, ios::binary | ios::in | ios::out);
@@ -117,13 +117,13 @@ void EliminarProducto(){
             archivo.seekp(-sizeof(Producto), ios::cur);
             archivo.write((char*)&p, sizeof(Producto));
 
-            cout << "Producto Eliminado";
+            cout << "\nProducto Eliminado\n";
             encontrado = true;
             break;
         }
     }
     if (!encontrado) {
-        cout <<"Producto no encontrado\n"
+        cout <<"Producto no encontrado";
     }
 }
 
@@ -148,12 +148,12 @@ int main () {
             case 5:
                 BuscarProducto();
                 break;
-            case 0:
+            case 6:
                 cout << "Saliendo del programa.\n";
                 break;
             default:
                 cout << "Opcion invalida. Intente de nuevo.\n";
         }
-    } while (opcion != 0);
+    } while (opcion != 6);
     
 }
