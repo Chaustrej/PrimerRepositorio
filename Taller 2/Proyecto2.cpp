@@ -129,7 +129,7 @@ void EliminarProducto(){
 }
 void mostrarPorCategoria() {
     char categoria[20];
-    cout << "Ingrese categoría: ";
+    cout << "Ingrese categoria: ";
     cin.ignore();
     cin.getline(categoria, 20);
 
