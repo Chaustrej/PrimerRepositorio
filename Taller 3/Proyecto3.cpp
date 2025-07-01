@@ -9,13 +9,21 @@ class Publicacion {
     string titulo;
     string autor;
     int anioPublicacion;
-
+//constructor 
     public:
-    Publicacion(string t, string a, int anio) : titulo(t), autor(a), anioPublicacion(anio) {
-        
-    }
-};
+    Publicacion(string t, string a, int anio) : titulo(t), autor(a), anioPublicacion(anio) {}
+// destructor 
+  virtual ~Publicacion() {}
 
+    string getTitulo() const { return titulo; }
+    string getAutor() const { return autor; }
+    int getAnioPublicacion() const { return anioPublicacion; }
+
+    void mostrarInformacion() const {
+        cout << "Titulo: " << titulo << ", Autor: " << autor << ", Año de Publicación: " << anioPublicacion << endl;
+    }
+ 
+    virtual string getTipo() const = 0; // Método virtual puro para obtener el tipo de publicación
 
 
 
@@ -47,12 +55,11 @@ int main(){
           
             break;
         case 5:
-          
-            break;
-        case 6:
             cout << "Saliendo del programa." << endl;
             break;
         default:
             cout << "Opción no válida, intente de nuevo." << endl;
-    }  
-}}
+    }  while(opcion != 5);  
+}
+return 0;
+}
