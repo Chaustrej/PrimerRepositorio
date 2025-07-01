@@ -47,6 +47,9 @@ int main(){
           
             break;
         case 5:
+          
+            break;
+        case 6:
             cout << "Saliendo del programa." << endl;
             break;
         default:
