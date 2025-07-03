@@ -24,7 +24,7 @@ class Publicacion {
     }
  
     virtual string getTipo() const = 0; // Método virtual puro para obtener el tipo de publicación
-
+};
 
 
 int main(){
