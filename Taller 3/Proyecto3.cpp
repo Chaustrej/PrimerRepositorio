@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
-#include <locale>
+
 using namespace std;
 class Publicacion {
 private:
@@ -25,10 +25,10 @@ public:
         : Publicacion(t, a, anio), numeroPaginas(paginas) {}
 
     void mostrar() const override {
-        cout << "Tipo: Libro\nTítulo: " << getTitulo()
+        cout << "Tipo: Libro\nTitulo: " << getTitulo()
              << "\nAutor: " << getAutor()
-             << "\nAño: " << getAnioPublicacion()
-             << "\nPáginas: " << numeroPaginas << endl;
+             << "\nAno: " << getAnioPublicacion()
+             << "\nPaginas: " << numeroPaginas << endl;
     }
 };
 class Revista : public Publicacion {
@@ -39,10 +39,10 @@ public:
         : Publicacion(t, a, anio), numeroEdicion(edicion) {}
 
     void mostrar() const override {
-        cout << "Tipo: Revista\nTítulo: " << getTitulo()
+        cout << "Tipo: Revista\nTitulo: " << getTitulo()
              << "\nAutor: " << getAutor()
-             << "\nAño: " << getAnioPublicacion()
-             << "\nEdición: " << numeroEdicion << endl;
+             << "\nAno: " << getAnioPublicacion()
+             << "\nEdicion: " << numeroEdicion << endl;
     }
 };
 class Periodico : public Publicacion {
@@ -53,10 +53,10 @@ public:
     Periodico(string t, string a, int anio, string fecha, string c)
         : Publicacion(t, a, anio), fechaPublicacion(fecha), ciudad(c) {}
     void mostrar() const override {
-        cout << "Tipo: Periódico\nTítulo: " << getTitulo()
+        cout << "Tipo: Periodico\nTitulo: " << getTitulo()
              << "\nAutor: " << getAutor()
-             << "\nAño: " << getAnioPublicacion()
-             << "\nFecha de Publicación: " << fechaPublicacion
+             << "\nAno: " << getAnioPublicacion()
+             << "\nFecha de Publicacion: " << fechaPublicacion
              << "\nCiudad: " << ciudad << endl;
     }
 };
@@ -83,15 +83,15 @@ Publicacion* crearPublicacion() {
 
     do {
         cout << "\n=== TIPOS DE PUBLICACIÓN ===\n";
-        cout << "1. Libro\n2. Revista\n3. Periódico\n4. Volver al menú principal\nSeleccione el tipo: ";
+        cout << "1. Libro\n2. Revista\n3. Periodico\n4. Volver al menu principal\nSeleccione el tipo: ";
         cin >> tipo;
         limpiarBuffer();
 
         if (tipo == 4) return nullptr;
 
-        cout << "Título: "; getline(cin, titulo);
+        cout << "Titulo: "; getline(cin, titulo);
         cout << "Autor: "; getline(cin, autor);
-        cout << "Año (1500-2025): "; cin >> anio;
+        cout << "Ano (1500-2025): "; cin >> anio;
         limpiarBuffer();
 
         if (!validarTexto(titulo) || !validarTexto(autor) || !validarAnio(anio)) {
@@ -100,20 +100,20 @@ Publicacion* crearPublicacion() {
         }
 
         if (tipo == 1) {
-            cout << "Número de páginas: "; cin >> numero;
+            cout << "Numero de paginas: "; cin >> numero;
             if (!validarNumeroPositivo(numero)) return nullptr;
             return new Libro(titulo, autor, anio, numero);
         } else if (tipo == 2) {
-            cout << "Número de edición: "; cin >> numero;
+            cout << "Número de edicion: "; cin >> numero;
             if (!validarNumeroPositivo(numero)) return nullptr;
             return new Revista(titulo, autor, anio, numero);
         } else if (tipo == 3) {
-            cout << "Fecha de publicación (ej: 04-07-2025): "; getline(cin, fecha);
-            cout << "Ciudad de publicación: "; getline(cin, ciudad);
+            cout << "Fecha de publicacion (ej: 04-07-2025): "; getline(cin, fecha);
+            cout << "Ciudad de publicacion: "; getline(cin, ciudad);
             if (!validarTexto(fecha) || !validarTexto(ciudad)) return nullptr;
             return new Periodico(titulo, autor, anio, fecha, ciudad);
         } else {
-            cout << "Opción inválida.\n";
+            cout << "Opcion invalida.\n";
         }
     } while (true);
 }
@@ -129,7 +129,7 @@ void mostrarCatalogo(Publicacion** catalogo, int total) {
 }
 void buscarTitulo(Publicacion** catalogo, int total) {
     string buscar;
-    cout << "\nIngrese el título a buscar: ";
+    cout << "\nIngrese el titulo a buscar: ";
     limpiarBuffer();
     getline(cin, buscar);
     bool encontrado = false;
@@ -148,8 +148,8 @@ void eliminarPublicacion(Publicacion**& catalogo, int& total) {
     if (total == 0) { cout << "No hay publicaciones.\n"; return; }
     mostrarCatalogo(catalogo, total);
     int i;
-    cout << "\nSeleccione el número a eliminar: "; cin >> i;
-    if (i < 1 || i > total) { cout << "Índice inválido.\n"; return; }
+    cout << "\nSeleccione el numero a eliminar: "; cin >> i;
+    if (i < 1 || i > total) { cout << "Indice invalido.\n"; return; }
     delete catalogo[i - 1];
     for (int j = i - 1; j < total - 1; ++j) catalogo[j] = catalogo[j + 1];
     total--;
@@ -170,27 +170,23 @@ void mostrarEstadisticas(Publicacion** catalogo, int total) {
         if (anio < minAnio) minAnio = anio;
         if (anio > maxAnio) maxAnio = anio;
     }
-
-    cout << "\nEstadísticas:\n";
-    cout << "Total: " << total << "\nLibros: " << libros << "\nRevistas: " << revistas << "\nPeriódicos: " << periodicos << endl;
-    cout << "Más antigua: " << minAnio << "\nMás reciente: " << maxAnio << endl;
+    cout << "\nEstadisticas:\n";
+    cout << "Total: " << total << "\nLibros: " << libros << "\nRevistas: " << revistas << "\nPeriodicos: " << periodicos << endl;
+    cout << "Mas antigua: " << minAnio << "\nMas reciente: " << maxAnio << endl;
 }
-
 void liberarMemoria(Publicacion** catalogo, int total) {
     for (int i = 0; i < total; ++i) delete catalogo[i];
     delete[] catalogo;
 }
-
 int main() {
     int capacidad = 5, total = 0;
     Publicacion** catalogo = new Publicacion*[capacidad];
     int opcion;
-
     do {
-        cout << "\n===== SISTEMA DE GESTIÓN DE BIBLIOTECA =====\n";
-        cout << "1. Agregar nueva publicación\n2. Mostrar todas las publicaciones\n";
-        cout << "3. Buscar publicación por título\n4. Eliminar publicación\n";
-        cout << "5. Mostrar estadísticas\n6. Salir del programa\nOpción: ";
+        cout << "\n=== SISTEMA DE GESTION DE BIBLIOTECA ===\n";
+        cout << "1. Agregar nueva publicacion\n2. Mostrar todas las publicaciones\n";
+        cout << "3. Buscar publicacion por titulo\n4. Eliminar publicacion\n";
+        cout << "5. Mostrar estadisticas\n6. Salir del programa\nOpcion: ";
         cin >> opcion;
 
         switch (opcion) {
@@ -219,9 +215,8 @@ int main() {
                 cout << "Saliendo...\n";
                 break;
             default:
-                cout << "Opción inválida.\n";
+                cout << "Opcion invalida.\n";
         }
     } while (opcion != 6);
-
     return 0;
 }
