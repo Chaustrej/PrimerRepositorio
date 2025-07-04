@@ -47,18 +47,19 @@ public:
 };
 class Periodico : public Publicacion {
 private:
-    string frecuencia;
+    string fechaPublicacion;  
+    string ciudad;            
 public:
-    Periodico(string t, string a, int anio, string freq)
-        : Publicacion(t, a, anio), frecuencia(freq) {}
+    Periodico(string t, string a, int anio, string fecha, string c)
+        : Publicacion(t, a, anio), fechaPublicacion(fecha), ciudad(c) {}
     void mostrar() const override {
         cout << "Tipo: Periódico\nTítulo: " << getTitulo()
              << "\nAutor: " << getAutor()
              << "\nAño: " << getAnioPublicacion()
-             << "\nFrecuencia: " << frecuencia << endl;
+             << "\nFecha de Publicación: " << fechaPublicacion
+             << "\nCiudad: " << ciudad << endl;
     }
 };
-
 // funciones de validación
 bool validarTexto(const string& texto) { return !texto.empty();}
 bool validarAnio(int anio) {return anio >= 1800 && anio <= 2025;}
@@ -78,43 +79,47 @@ void redimensionar(Publicacion**& arreglo, int& capacidad, int nuevoTamano) {
 }
 Publicacion* crearPublicacion() {
     int tipo, anio, numero;
-    string titulo, autor, frecuencia;
-    cout << "\nSeleccione tipo de publicación:\n";
-    cout << "1. Libro\n2. Revista\n3. Periódico\nOpción: ";
-    cin >> tipo;
-    limpiarBuffer();
-    cout << "Ingrese el título: ";
-    getline(cin, titulo);
-    if (!validarTexto(titulo)) return nullptr;
-    cout << "Ingrese el autor: ";
-    getline(cin, autor);
-    if (!validarTexto(autor)) return nullptr;
-    cout << "Ingrese el año de publicación (1500-2025): ";
-    cin >> anio;
-    if (!validarAnio(anio)) return nullptr;
-    if (tipo == 1) {
-        cout << "Número de páginas: ";
-        cin >> numero;
-        if (!validarNumeroPositivo(numero)) return nullptr;
-        return new Libro(titulo, autor, anio, numero);
-    } else if (tipo == 2) {
-        cout << "Número de edición: ";
-        cin >> numero;
-        if (!validarNumeroPositivo(numero)) return nullptr;
-        return new Revista(titulo, autor, anio, numero);
-    } else if (tipo == 3) {
-        limpiarBuffer();
-        cout << "Frecuencia (Diario, Semanal, etc.): ";
-        getline(cin, frecuencia);
-        if (!validarTexto(frecuencia)) return nullptr;
-        return new Periodico(titulo, autor, anio, frecuencia);
-    } else {
-        cout << "Tipo inválido.\n";
-        return nullptr; }}
+    string titulo, autor, fecha, ciudad;
 
-        void mostrarCatalogo(Publicacion** catalogo, int total) {
+    do {
+        cout << "\n=== TIPOS DE PUBLICACIÓN ===\n";
+        cout << "1. Libro\n2. Revista\n3. Periódico\n4. Volver al menú principal\nSeleccione el tipo: ";
+        cin >> tipo;
+        limpiarBuffer();
+
+        if (tipo == 4) return nullptr;
+
+        cout << "Título: "; getline(cin, titulo);
+        cout << "Autor: "; getline(cin, autor);
+        cout << "Año (1500-2025): "; cin >> anio;
+        limpiarBuffer();
+
+        if (!validarTexto(titulo) || !validarTexto(autor) || !validarAnio(anio)) {
+            cout << "Datos inválidos.\n";
+            continue;
+        }
+
+        if (tipo == 1) {
+            cout << "Número de páginas: "; cin >> numero;
+            if (!validarNumeroPositivo(numero)) return nullptr;
+            return new Libro(titulo, autor, anio, numero);
+        } else if (tipo == 2) {
+            cout << "Número de edición: "; cin >> numero;
+            if (!validarNumeroPositivo(numero)) return nullptr;
+            return new Revista(titulo, autor, anio, numero);
+        } else if (tipo == 3) {
+            cout << "Fecha de publicación (ej: 04-07-2025): "; getline(cin, fecha);
+            cout << "Ciudad de publicación: "; getline(cin, ciudad);
+            if (!validarTexto(fecha) || !validarTexto(ciudad)) return nullptr;
+            return new Periodico(titulo, autor, anio, fecha, ciudad);
+        } else {
+            cout << "Opción inválida.\n";
+        }
+    } while (true);
+}
+void mostrarCatalogo(Publicacion** catalogo, int total) {
     if (total == 0) {
-        cout << "No hay publicaciones registradas.\n";
+        cout << "No hay publicaciones.\n";
         return;
     }
     for (int i = 0; i < total; ++i) {
@@ -122,62 +127,101 @@ Publicacion* crearPublicacion() {
         catalogo[i]->mostrar();
     }
 }
+void buscarTitulo(Publicacion** catalogo, int total) {
+    string buscar;
+    cout << "\nIngrese el título a buscar: ";
+    limpiarBuffer();
+    getline(cin, buscar);
+    bool encontrado = false;
+
+    for (int i = 0; i < total; ++i) {
+        if (catalogo[i]->getTitulo().find(buscar) != string::npos) {
+            catalogo[i]->mostrar();
+            encontrado = true;
+        }
+    }
+    if (!encontrado) cout << "No se encontraron coincidencias.\n";
+}
+
+
 void eliminarPublicacion(Publicacion**& catalogo, int& total) {
-    if (total == 0) {
-        cout << "No hay publicaciones.\n";
-        return;
-    }
-
+    if (total == 0) { cout << "No hay publicaciones.\n"; return; }
     mostrarCatalogo(catalogo, total);
-    int indice;
-    cout << "\nSeleccione el número a eliminar: ";
-    cin >> indice;
-
-    if (indice < 1 || indice > total) {
-        cout << "Índice inválido.\n";
-        return;
-    }
-
-    delete catalogo[indice - 1];
-    for (int i = indice - 1; i < total - 1; ++i) {
-        catalogo[i] = catalogo[i + 1];
-    }
+    int i;
+    cout << "\nSeleccione el número a eliminar: "; cin >> i;
+    if (i < 1 || i > total) { cout << "Índice inválido.\n"; return; }
+    delete catalogo[i - 1];
+    for (int j = i - 1; j < total - 1; ++j) catalogo[j] = catalogo[j + 1];
     total--;
-    cout << "Publicación eliminada.\n";
+    cout << "Eliminado.\n";
+}
+void mostrarEstadisticas(Publicacion** catalogo, int total) {
+    int libros = 0, revistas = 0, periodicos = 0;
+    if (total == 0) { cout << "No hay publicaciones.\n"; return; }
+    int minAnio = catalogo[0]->getAnioPublicacion();
+    int maxAnio = catalogo[0]->getAnioPublicacion();
+
+    for (int i = 0; i < total; ++i) {
+        if (dynamic_cast<Libro*>(catalogo[i])) libros++;
+        else if (dynamic_cast<Revista*>(catalogo[i])) revistas++;
+        else if (dynamic_cast<Periodico*>(catalogo[i])) periodicos++;
+
+        int anio = catalogo[i]->getAnioPublicacion();
+        if (anio < minAnio) minAnio = anio;
+        if (anio > maxAnio) maxAnio = anio;
+    }
+
+    cout << "\nEstadísticas:\n";
+    cout << "Total: " << total << "\nLibros: " << libros << "\nRevistas: " << revistas << "\nPeriódicos: " << periodicos << endl;
+    cout << "Más antigua: " << minAnio << "\nMás reciente: " << maxAnio << endl;
 }
 
-int main(){
- int opcion; 
-
- do {
-    cout << "Menu de opciones:" << endl;
-    cout << "1. Agregar nueva publicacion" << endl;
-    cout << "2. Mostrar todas las publicaciones" << endl;
-    cout << "3. Buscar publicacion por titulo" << endl;
-    cout << "4. Eliminar publicacion" << endl;
-    cout << "5. Mostrar estadisticas" << endl;
-    cout << "6. Salir del programa" << endl;
-    cout << "Seleccione una opcion: ";
-    cin >> opcion;
-
-    switch(opcion) {
-        case 1:
-          
-            break;
-        case 2:
-          
-            break;
-        case 3:
-           
-            break;
-        case 4:
-          
-            break;
-        case 5:
-            cout << "Saliendo del programa." << endl;
-            break;
-        default:
-            cout << "Opción no válida, intente de nuevo." << endl;
-    }  while(opcion != 5);  
+void liberarMemoria(Publicacion** catalogo, int total) {
+    for (int i = 0; i < total; ++i) delete catalogo[i];
+    delete[] catalogo;
 }
+
+int main() {
+    int capacidad = 5, total = 0;
+    Publicacion** catalogo = new Publicacion*[capacidad];
+    int opcion;
+
+    do {
+        cout << "\n===== SISTEMA DE GESTIÓN DE BIBLIOTECA =====\n";
+        cout << "1. Agregar nueva publicación\n2. Mostrar todas las publicaciones\n";
+        cout << "3. Buscar publicación por título\n4. Eliminar publicación\n";
+        cout << "5. Mostrar estadísticas\n6. Salir del programa\nOpción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                if (total == capacidad)
+                    redimensionar(catalogo, capacidad, capacidad + 5);
+                Publicacion* pub = crearPublicacion();
+                if (pub != nullptr)
+                    catalogo[total++] = pub;
+                break;
+            }
+            case 2:
+                mostrarCatalogo(catalogo, total);
+                break;
+            case 3:
+                buscarTitulo(catalogo, total);
+                break;
+            case 4:
+                eliminarPublicacion(catalogo, total);
+                break;
+            case 5:
+                mostrarEstadisticas(catalogo, total);
+                break;
+            case 6:
+                liberarMemoria(catalogo, total);
+                cout << "Saliendo...\n";
+                break;
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 6);
+
+    return 0;
 }
