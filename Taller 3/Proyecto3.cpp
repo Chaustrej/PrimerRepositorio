@@ -1,30 +1,92 @@
 #include <iostream>
-#include <fstream>
-#include <string.h>
+#include <string>
+#include <limits>
+#include <locale>
 
 using namespace std;
 
 class Publicacion {
-    private:
+private:
     string titulo;
     string autor;
     int anioPublicacion;
-//constructor 
-    public:
-    Publicacion(string t, string a, int anio) : titulo(t), autor(a), anioPublicacion(anio) {}
-// destructor 
-  virtual ~Publicacion() {}
 
+public:
+    Publicacion(string t, string a, int anio): titulo(t), autor(a), anioPublicacion(anio) {}
+    virtual void mostrar() const = 0;
     string getTitulo() const { return titulo; }
     string getAutor() const { return autor; }
     int getAnioPublicacion() const { return anioPublicacion; }
-
-    void mostrarInformacion() const {
-        cout << "Titulo: " << titulo << ", Autor: " << autor << ", Año de Publicación: " << anioPublicacion << endl;
-    }
- 
-    virtual string getTipo() const = 0; // Método virtual puro para obtener el tipo de publicación
+    virtual ~Publicacion() {}
 };
+
+class Libro : public Publicacion {
+private:
+    int numeroPaginas;
+
+public:
+    Libro(string t, string a, int anio, int paginas)
+        : Publicacion(t, a, anio), numeroPaginas(paginas) {}
+
+    void mostrar() const override {
+        cout << "Tipo: Libro\nTítulo: " << getTitulo()
+             << "\nAutor: " << getAutor()
+             << "\nAño: " << getAnioPublicacion()
+             << "\nPáginas: " << numeroPaginas << endl;
+    }
+};
+
+class Revista : public Publicacion {
+private:
+    int numeroEdicion;
+
+public:
+    Revista(string t, string a, int anio, int edicion)
+        : Publicacion(t, a, anio), numeroEdicion(edicion) {}
+
+    void mostrar() const override {
+        cout << "Tipo: Revista\nTítulo: " << getTitulo()
+             << "\nAutor: " << getAutor()
+             << "\nAño: " << getAnioPublicacion()
+             << "\nEdición: " << numeroEdicion << endl;
+    }
+};
+
+class Periodico : public Publicacion {
+private:
+    string frecuencia;
+
+public:
+    Periodico(string t, string a, int anio, string freq)
+        : Publicacion(t, a, anio), frecuencia(freq) {}
+
+    void mostrar() const override {
+        cout << "Tipo: Periódico\nTítulo: " << getTitulo()
+             << "\nAutor: " << getAutor()
+             << "\nAño: " << getAnioPublicacion()
+             << "\nFrecuencia: " << frecuencia << endl;
+    }
+};
+
+// funciones de validación
+bool validarTexto(const string& texto) { return !texto.empty();}
+bool validarAnio(int anio) {return anio >= 1800 && anio <= 2025;}
+bool validarNumeroPositivo(int num) {return num > 0;}
+void limpiarBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+void redimensionar(Publicacion**& arreglo, int& capacidad, int nuevoTamano) {
+    Publicacion** nuevo = new Publicacion*[nuevoTamano];
+    for (int i = 0; i < capacidad; i++) {
+        nuevo[i] = arreglo[i];
+    }
+    delete[] arreglo;
+    arreglo = nuevo;
+    capacidad = nuevoTamano;
+}
+
+
 
 
 int main(){
