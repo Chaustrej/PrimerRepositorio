@@ -104,7 +104,7 @@ Publicacion* crearPublicacion() {
             if (!validarNumeroPositivo(numero)) return nullptr;
             return new Libro(titulo, autor, anio, numero);
         } else if (tipo == 2) {
-            cout << "Número de edicion: "; cin >> numero;
+            cout << "Numero de edicion: "; cin >> numero;
             if (!validarNumeroPositivo(numero)) return nullptr;
             return new Revista(titulo, autor, anio, numero);
         } else if (tipo == 3) {
