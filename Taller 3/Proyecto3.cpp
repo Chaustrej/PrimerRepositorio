@@ -85,10 +85,42 @@ void redimensionar(Publicacion**& arreglo, int& capacidad, int nuevoTamano) {
     arreglo = nuevo;
     capacidad = nuevoTamano;
 }
-
-
-
-
+Publicacion* crearPublicacion() {
+    int tipo, anio, numero;
+    string titulo, autor, frecuencia;
+    cout << "\nSeleccione tipo de publicación:\n";
+    cout << "1. Libro\n2. Revista\n3. Periódico\nOpción: ";
+    cin >> tipo;
+    limpiarBuffer();
+    cout << "Ingrese el título: ";
+    getline(cin, titulo);
+    if (!validarTexto(titulo)) return nullptr;
+    cout << "Ingrese el autor: ";
+    getline(cin, autor);
+    if (!validarTexto(autor)) return nullptr;
+    cout << "Ingrese el año de publicación (1500-2025): ";
+    cin >> anio;
+    if (!validarAnio(anio)) return nullptr;
+    if (tipo == 1) {
+        cout << "Número de páginas: ";
+        cin >> numero;
+        if (!validarNumeroPositivo(numero)) return nullptr;
+        return new Libro(titulo, autor, anio, numero);
+    } else if (tipo == 2) {
+        cout << "Número de edición: ";
+        cin >> numero;
+        if (!validarNumeroPositivo(numero)) return nullptr;
+        return new Revista(titulo, autor, anio, numero);
+    } else if (tipo == 3) {
+        limpiarBuffer();
+        cout << "Frecuencia (Diario, Semanal, etc.): ";
+        getline(cin, frecuencia);
+        if (!validarTexto(frecuencia)) return nullptr;
+        return new Periodico(titulo, autor, anio, frecuencia);
+    } else {
+        cout << "Tipo inválido.\n";
+        return nullptr; }}
+        
 int main(){
  int opcion; 
 
