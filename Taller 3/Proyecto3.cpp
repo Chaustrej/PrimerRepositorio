@@ -2,9 +2,7 @@
 #include <string>
 #include <limits>
 #include <locale>
-
 using namespace std;
-
 class Publicacion {
 private:
     string titulo;
@@ -19,11 +17,9 @@ public:
     int getAnioPublicacion() const { return anioPublicacion; }
     virtual ~Publicacion() {}
 };
-
 class Libro : public Publicacion {
 private:
     int numeroPaginas;
-
 public:
     Libro(string t, string a, int anio, int paginas)
         : Publicacion(t, a, anio), numeroPaginas(paginas) {}
@@ -35,11 +31,9 @@ public:
              << "\nPáginas: " << numeroPaginas << endl;
     }
 };
-
 class Revista : public Publicacion {
 private:
     int numeroEdicion;
-
 public:
     Revista(string t, string a, int anio, int edicion)
         : Publicacion(t, a, anio), numeroEdicion(edicion) {}
@@ -51,15 +45,12 @@ public:
              << "\nEdición: " << numeroEdicion << endl;
     }
 };
-
 class Periodico : public Publicacion {
 private:
     string frecuencia;
-
 public:
     Periodico(string t, string a, int anio, string freq)
         : Publicacion(t, a, anio), frecuencia(freq) {}
-
     void mostrar() const override {
         cout << "Tipo: Periódico\nTítulo: " << getTitulo()
              << "\nAutor: " << getAutor()
@@ -120,7 +111,41 @@ Publicacion* crearPublicacion() {
     } else {
         cout << "Tipo inválido.\n";
         return nullptr; }}
-        
+
+        void mostrarCatalogo(Publicacion** catalogo, int total) {
+    if (total == 0) {
+        cout << "No hay publicaciones registradas.\n";
+        return;
+    }
+    for (int i = 0; i < total; ++i) {
+        cout << "\n[" << i + 1 << "] ";
+        catalogo[i]->mostrar();
+    }
+}
+void eliminarPublicacion(Publicacion**& catalogo, int& total) {
+    if (total == 0) {
+        cout << "No hay publicaciones.\n";
+        return;
+    }
+
+    mostrarCatalogo(catalogo, total);
+    int indice;
+    cout << "\nSeleccione el número a eliminar: ";
+    cin >> indice;
+
+    if (indice < 1 || indice > total) {
+        cout << "Índice inválido.\n";
+        return;
+    }
+
+    delete catalogo[indice - 1];
+    for (int i = indice - 1; i < total - 1; ++i) {
+        catalogo[i] = catalogo[i + 1];
+    }
+    total--;
+    cout << "Publicación eliminada.\n";
+}
+
 int main(){
  int opcion; 
 
@@ -155,5 +180,4 @@ int main(){
             cout << "Opción no válida, intente de nuevo." << endl;
     }  while(opcion != 5);  
 }
-return 0;
 }
