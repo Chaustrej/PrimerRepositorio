@@ -6,21 +6,11 @@ using namespace std;
 const char* ARCHIVO = "personas.dat";
 
 class Persona {
-private:
+public:
     char nombre[30], apellido[30], cedula[15];
     int edad;
     float coeficiente_int;
     bool activo;
-
-public:
-    Persona() {
-        strcpy(nombre, "");
-        strcpy(apellido, "");
-        edad = 0;
-        strcpy(cedula, "");
-        coeficiente_int = 0;
-        activo = true;
-    }
 
     void ingresarDatos() {
         cout << "Nombre: "; cin.ignore(); cin.getline(nombre, 30);
@@ -31,7 +21,7 @@ public:
         activo = true;
     }
 
-    void mostrar() const {
+    void mostrarRegistro() const {
         cout << "Nombre: " << nombre
              << ", Apellido: " << apellido
              << ", Edad: " << edad
@@ -51,7 +41,7 @@ public:
         return edad;
     }
 
-    void modificar() {
+    void modificarDatos() {
         cout << "Nuevo nombre: "; cin.ignore(); cin.getline(nombre, 30);
         cout << "Nuevo apellido: "; cin.getline(apellido, 30);
         cout << "Nueva edad: "; cin >> edad;
@@ -80,7 +70,7 @@ public:
         cout << "\n- Lista de personas -\n";
         while (archivo.read((char*)&p, sizeof(Persona))) {
             if (p.esActiva()) {
-                p.mostrar();
+                p.mostrarRegistro();
             }
         }
         archivo.close();
@@ -95,7 +85,7 @@ public:
 
         while (archivo.read((char*)&p, sizeof(Persona))) {
             if (p.esActiva() && strcmp(p.getCedula(), cedula) == 0) {
-                p.mostrar();
+                p.mostrarRegistro();
                 encontrado = true;
                 break;
             }
@@ -118,8 +108,8 @@ public:
         while (archivo.read((char*)&p, sizeof(Persona))) {
             if (p.esActiva() && strcmp(p.getCedula(), cedula) == 0) {
                 cout << "Modificando persona:\n";
-                p.mostrar();
-                p.modificar();
+                p.mostrarRegistro();
+                p.modificarDatos();
                 archivo.seekp(-sizeof(Persona), ios::cur);
                 archivo.write((char*)&p, sizeof(Persona));
                 cout << "Persona modificada.\n";
@@ -174,7 +164,7 @@ public:
         cout << "\n-Personas con mayor edad (" << mayorEdad << " anos):\n";
         while (archivo.read((char*)&p, sizeof(Persona))) {
             if (p.esActiva() && p.getEdad() == mayorEdad) {
-                p.mostrar();
+                p.mostrarRegistro();
                 encontrado = true;
             }
         }
